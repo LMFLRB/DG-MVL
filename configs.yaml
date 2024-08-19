@@ -1,0 +1,96 @@
+optuna:
+  n_trials: 30
+  n_trials_to_save: 5
+  timeout: 500
+
+experiment:
+  log_dir: "multi_view_logs"
+  ssh: False
+  enable_earlystop: True
+  use_tuned_params: True
+  save_results: True
+  view_latent: True
+  cuda: True
+  basic_metric: 'accuracy'
+  plot_mode: "step"
+  mode: 'release' #'debug' #
+  update_freq: 1
+  save_freq: 20
+  n_cross_validation: 5
+  seed: 1266
+  # p_dropout: 0.2
+  latex: True
+  print_width: 14
+  delta_earlystop: 1.0e-3
+  patience: 10
+  silent: False
+  max_epochs: 200
+  min_iters: 1000
+
+optimizer:
+  # name: "SGD"
+  # lr: 0.01
+  # momentum: 0.9
+  name: "Adam"
+  lr: 0.001
+
+scheduler:
+  name: "ExponentialLR" #"MultiStepLR" # "StepLR" #
+  gamma: 0.99
+
+  
+data:
+  root_dir: "G:/Data/Multi_view"
+  name: 'Outdoor-Scene' #'handwritten' #'XRMB' # 'NUS-WIDE-SCENE' #'MSRC' #'Caltech101-20' #"NUS_WIDE_OBJECT" # 
+  cuda: True
+
+dataloader:  
+  train_batch_size: 256
+  val_batch_size: 256
+  num_workers: 0
+  pin_memory: False
+  drop_last: False
+
+metrics: ['accuracy', 'precision', 'recall', 'f1-score']    
+
+loss:
+  ce: 'ce'
+  rec: 'mse'
+  div_com: 'gcsd' #'pmmd' # 
+  div_uni: 'gcsd' #'pmmd' # 
+  # ent_com: 'ent'
+  # ent_all: 'ent'
+  bcd_measure: 'mmd'
+  # sigmas: 1.0
+  weights:
+    ce: 1.0e-0
+    div_com: 1.0e-2
+    div_uni: -1.0e-2
+    # ent_com: -1.0e-3
+    # ent_all: 1.0e-1
+    rec: 2.0e-0
+
+model:
+  n_view: 2
+  encode_only: False
+  fuse_method: "cat" # 'attension'
+  common_method: 'align' # "random" #
+  reconst_type: 'common' #"self" # 
+  # measure_structure: true
+
+  autoencoder:
+    n_class: 20
+    activation: "ReLU"
+    final_activation: "Sigmoid"
+    use_dropout: True
+    use_batchnorm: True
+    stochastic: False
+    default_setting: True
+
+  predictor:
+    n_class: 20
+    use_dropout: True
+    use_batchnorm: True
+
+
+  
